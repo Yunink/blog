@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OWASP-TOP-10 | Yunink's Blog</title><meta name="description" content="关于OWASP TOP 10 的一份笔记"><meta name="keywords" content="OWASP"><meta name="author" content="Yunink"><meta name="copyright" content="Yunink"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="twitter:card" content="summary"><meta name="twitter:title" content="OWASP-TOP-10"><meta name="twitter:description" content="关于OWASP TOP 10 的一份笔记"><meta name="twitter:image" content="https://blog.yunink.top/images/cover-top/1-owasp.png"><meta property="og:type" content="article"><meta property="og:title" content="OWASP-TOP-10"><meta property="og:url" content="https://blog.yunink.top/2018/11/20/SRC/owasp_top10/"><meta property="og:site_name" content="Yunink's Blog"><meta property="og:description" content="关于OWASP TOP 10 的一份笔记"><meta property="og:image" content="https://blog.yunink.top/images/cover-top/1-owasp.png"><meta property="article:published_time" content="2018-11-20T14:43:45.000Z"><meta property="article:modified_time" content="2020-04-15T07:52:07.851Z"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>var autoChangeMode = '1'
+var t = Cookies.get("theme")
+if (autoChangeMode == '1'){
+  var isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+  var isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+  var isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined){
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport){
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour < 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+  }
+  } else if (t == 'light') activateLightMode()
+  else activateDarkMode()
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="https://blog.yunink.top/2018/11/20/SRC/owasp_top10/"><link rel="prev" title="Linux hot key" href="https://blog.yunink.top/2018/12/15/VPS/linux-hotkey/"><link rel="next" title="BugKu-CTF WP" href="https://blog.yunink.top/2018/10/12/WriteUp/bugku-challenge/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5/js/md5.min.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime_unit: 'days',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  highlightShrink: 'false',
+  isFontAwesomeV5: false,
+  isPhotoFigcaption: false
+  
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isSidebar: true  
+  }</script><noscript><style>
+#page-header {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">54</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">41</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">12</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> Comment</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-wrench" aria-hidden="true"></i><span> Tools</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/inkscan/"><i class="fa-fw fa fa-superpowers"></i><span> INKScan</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div></div></div><i class="fa fa-arrow-right on" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP1-注入"><span class="toc-number">1.</span> <span class="toc-text">TOP1-注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP2-失效的身份认证和会话管理"><span class="toc-number">2.</span> <span class="toc-text">TOP2-失效的身份认证和会话管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP3-跨站XSS"><span class="toc-number">3.</span> <span class="toc-text">TOP3-跨站XSS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP4-不安全的对象直接引用"><span class="toc-number">4.</span> <span class="toc-text">TOP4-不安全的对象直接引用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP5-伪造跨站请求（CSRF）"><span class="toc-number">5.</span> <span class="toc-text">TOP5-伪造跨站请求（CSRF）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP6-安全误配置"><span class="toc-number">6.</span> <span class="toc-text">TOP6-安全误配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP7-限制URL访问失败（缺少功能级访问控制）"><span class="toc-number">7.</span> <span class="toc-text">TOP7-限制URL访问失败（缺少功能级访问控制）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP8-未验证的重定向和转发"><span class="toc-number">8.</span> <span class="toc-text">TOP8-未验证的重定向和转发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP9-应用已知脆弱性的组件"><span class="toc-number">9.</span> <span class="toc-text">TOP9-应用已知脆弱性的组件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TOP10-敏感信息暴露"><span class="toc-number">10.</span> <span class="toc-text">TOP10-敏感信息暴露</span></a></li></ol></div></div></div><div id="body-wrap"><div class="post-bg" id="nav" style="background-image: url(/images/cover-top/1-owasp.png)"><div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">Yunink's Blog</a></span><span class="pull_right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> Comment</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-wrench" aria-hidden="true"></i><span> Tools</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/inkscan/"><i class="fa-fw fa fa-superpowers"></i><span> INKScan</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span></span></div><div id="post-info"><div id="post-title"><div class="posttitle">OWASP-TOP-10</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="Created 2018-11-20 22:43:45"><i class="fa fa-calendar" aria-hidden="true"></i> Created 2018-11-20</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="Updated 2020-04-15 15:52:07"><i class="fa fa-history" aria-hidden="true"></i> Updated 2020-04-15</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/SRC/">SRC</a></span></div><div class="meta-secondline"> </div><div class="meta-thirdline"><span class="post-meta-pv-cv"><i class="fa fa-eye post-meta__icon" aria-hidden="true"> </i><span>Post View:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"><span class="post-meta__separator">|</span><i class="post-meta__icon fa fa-comment-o" aria-hidden="true"></i><span>Comments:</span><a href="/2018/11/20/SRC/owasp_top10/#post-comment"><span class="gitalk-comment-count comment-count"></span></a></span></div></div></div></div><main class="layout_post" id="content-inner"><article id="post"><div id="article-container"><p>关于OWASP TOP 10 的一份笔记<a id="more"></a></p>
+<hr>
+<h1 id="TOP1-注入"><a href="#TOP1-注入" class="headerlink" title="TOP1-注入"></a>TOP1-注入</h1><p>简单来说，注入往往是应用程序缺少对输入进行安全型检查所引起的，攻击者把一些包含指令的数据发送给解释器，解释器会把收到的数据转换成指令执行。常见的注入包括sql注入，–os-shell，LDAP（轻量<a href="http://baike.baidu.com/item/目录访问协议" target="_blank" rel="noopener">目录访问协议</a>），xpath（XPath即为XML路径语言，它是一种用来确定<a href="http://baike.baidu.com/item/XML" target="_blank" rel="noopener">XML</a>（<a href="http://baike.baidu.com/item/标准通用标记语言" target="_blank" rel="noopener">标准通用标记语言</a>的子集）文档中某部分位置的语言），HQL注入等。</p>
+<p>危害如下：<br>注入可以导致数据丢失或被破坏，缺乏可审计性或拒绝服务。注入漏洞有时甚至可导致完全接管主机</p>
+<p>如何防范：</p>
+<ul>
+<li>使用安全的API，避免使用解释器</li>
+<li>对输入的特殊的字符进行ESCAPE转义处理</li>
+</ul>
+<p>例子：LIKE ‘%M%’ ESCAPE ‘M’</p>
+<p>使用ESCAPE关键字定义了转义字符“M”，告诉DBMS将搜索字符串“%M%”中的第二个百分符（%）作为实际值，而不是通配符</p>
+<ul>
+<li>使用白名单来规范化的输入验证方法</li>
+</ul>
+<h1 id="TOP2-失效的身份认证和会话管理"><a href="#TOP2-失效的身份认证和会话管理" class="headerlink" title="TOP2-失效的身份认证和会话管理"></a>TOP2-失效的身份认证和会话管理</h1><p>与认证和会话管理相关的应用程序功能往往得不到正确实施，导致了攻击者可以破坏密码，密钥，会话令牌或实施漏洞冒充其他用户身份</p>
+<p>危害如下：</p>
+<p>这些漏洞可能导致部分甚至全部账户遭受攻击，一旦攻击成功，攻击者就能执行合法的任何操作</p>
+<p>如何防范：</p>
+<ul>
+<li>使用内置的会话管理功能</li>
+<li>通过认证的问候</li>
+<li>使用单一的入口点</li>
+<li>确保在一开始登录SSL保护的网页</li>
+</ul>
+<h1 id="TOP3-跨站XSS"><a href="#TOP3-跨站XSS" class="headerlink" title="TOP3-跨站XSS"></a>TOP3-跨站XSS</h1><p>跨站脚本是最普遍的web应用安全漏洞。当应用程序在发送给浏览器的页面中包含用户提供的数据，但没有经过适当验证和转义，就会导致跨站</p>
+<p>危害如下：</p>
+<p>攻击者在受害者浏览器中执行脚本以劫持用户会话，插入恶意内容，重定向用户，使用恶意软件劫持用户浏览器等</p>
+<p>种类：</p>
+<p>存储型，反射型，DOM型</p>
+<p>如何防范：</p>
+<ul>
+<li>验证输入</li>
+<li>编码输出（用来确保输入的字符被视为数据，而不是作为html被浏览器所解析）</li>
+</ul>
+<h1 id="TOP4-不安全的对象直接引用"><a href="#TOP4-不安全的对象直接引用" class="headerlink" title="TOP4-不安全的对象直接引用"></a>TOP4-不安全的对象直接引用</h1><p>意指一个已经授权的用户通过更改访问时的一个参数，从而访问到原本其并没有得到授权的对象</p>
+<p>危害如下：</p>
+<p>这种漏洞可以损坏参数所引用的所有数据</p>
+<p>如何防范：</p>
+<ul>
+<li>使用基于用户或会话的间接对象访问，这样可防止攻击者直接攻击为授权资源</li>
+<li>访问检查：对任何来自不受信源所使用的所有对象进行访问控制检查</li>
+<li>避免在url或网页中直接引用内部文件名或数据库关键字</li>
+<li>验证用户输入和url请求，拒绝包含./ ../的请求</li>
+</ul>
+<h1 id="TOP5-伪造跨站请求（CSRF）"><a href="#TOP5-伪造跨站请求（CSRF）" class="headerlink" title="TOP5-伪造跨站请求（CSRF）"></a>TOP5-伪造跨站请求（CSRF）</h1><p>跨站请求伪造，利用了网站允许攻击者预测特定操作所有细节这一特点。由于浏览器自动发送会话cookie等认证凭证，导致攻击者可以创建恶意的web页面来产生伪造请求。这些伪造的请求很难和合法的请求区分开</p>
+<p>危害如下：</p>
+<p>攻击者可以让受害者用户修改任何允许修改的数据，执行任何用户允许的操作，例如修改密码，登录注销等</p>
+<p>如何防范：</p>
+<ul>
+<li>给每个HTTP请求添加一个不可预测的令牌，并保证该令牌对每个用户会话来说是唯一的。最好的办法就是将独有的令牌包含在隐藏字段中，通过HTTP请求发送，避免在URL中暴露出来</li>
+<li>要求用户重新认证或判断他们是一个真实德用户</li>
+</ul>
+<h1 id="TOP6-安全误配置"><a href="#TOP6-安全误配置" class="headerlink" title="TOP6-安全误配置"></a>TOP6-安全误配置</h1><p>安全配置错误可以发生在一个应用程序堆栈的任何层面，包括平台，web服务器，应用服务器，数据库，架构和自定义的代码。攻击者通过访问默认账户，未使用的网页，未安装的补丁的漏洞，未被保护的文件和目录等，以获得对系统为授权的访问</p>
+<p>危害如下；</p>
+<p>系统可能在未知的情况下被完全攻破，用户数据可能随着时间被全部盗走或篡改。甚至导致整个系统被完全破坏</p>
+<p>如何防范：</p>
+<ul>
+<li>自动化安装部署</li>
+<li>及时了解并部署每个环节的软件更新和补丁信息</li>
+<li>实施漏洞扫描和安全审计</li>
+</ul>
+<h1 id="TOP7-限制URL访问失败（缺少功能级访问控制）"><a href="#TOP7-限制URL访问失败（缺少功能级访问控制）" class="headerlink" title="TOP7-限制URL访问失败（缺少功能级访问控制）"></a>TOP7-限制URL访问失败（缺少功能级访问控制）</h1><p>这个漏洞也是与认证相关的，这种漏洞具体是指在系统已经对url的访问做了限制的情况下，但这种限制并没有生效。常见的例子是系统没有对用户进行角色的检查，以及用户通过修改URL的action并指向未被授权页面就能访问该页面同样是个漏洞</p>
+<p>危害如下：</p>
+<p>攻击者很容易就能把网址改成享有特权的网页，这样就可以使用匿名或普通用户访问未授保护的私人页面，从而提升未授权功能和相关数据信息</p>
+<p>如何防范：</p>
+<ul>
+<li>检查管理权限的过程并确保能够容易进行升级和审计</li>
+<li>默认缺省情况下，应该拒绝所有访问的执行权限。对于每个功能得访问，需要明确的角色授权</li>
+<li>检查每个功能分配的权限合理有效</li>
+</ul>
+<h1 id="TOP8-未验证的重定向和转发"><a href="#TOP8-未验证的重定向和转发" class="headerlink" title="TOP8-未验证的重定向和转发"></a>TOP8-未验证的重定向和转发</h1><p>在Web应用中重定向是极为普通的，并且通常重定向所引发的目的是带有用户输入参数的目的url，而如果这些重定向未被验证，那么攻击者就可以引导用户访问他们想要用户访问的站点</p>
+<p>同样，转发也是极为普遍的，本质上转发是在同一个应用中对一个新页面发送请求，并且有时是用参数来定义目标页面的。同样，如果参数未被验证，那么攻击者就可以利用其来绕过认证或是授权检查</p>
+<p>危害如下：</p>
+<p>攻击者通过重定向可以试图安装恶意软件或诱使受害人泄露密码等铭感信息，通过转发可以绕过访问限制</p>
+<p>如何防范：</p>
+<ul>
+<li>避免使用重定向和转发</li>
+<li>如果使用了，不要在确定目标时涉及到用户参数</li>
+<li>如果无法避免使用用户参数，则应确保目标参数值对于当前用户是有效的并已授权</li>
+</ul>
+<p>如果是需要登录的，可以从session当中获取登录信息，然后判断</p>
+<h1 id="TOP9-应用已知脆弱性的组件"><a href="#TOP9-应用已知脆弱性的组件" class="headerlink" title="TOP9-应用已知脆弱性的组件"></a>TOP9-应用已知脆弱性的组件</h1><p>应用程序使用带有已知漏洞的组件会破坏应用程序防御系统，可能导致严重的数据丢失或服务器接管</p>
+<p>如何防范：</p>
+<ul>
+<li>识别正在使用的组件和版本，包括所有的依赖</li>
+<li>更新组件或引用的库文件到最新</li>
+<li>建立安全策略来管理组件的使用</li>
+</ul>
+<h1 id="TOP10-敏感信息暴露"><a href="#TOP10-敏感信息暴露" class="headerlink" title="TOP10-敏感信息暴露"></a>TOP10-敏感信息暴露</h1><p>没什么可说的，就注重对敏感数据的保护即可</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Yunink</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://blog.yunink.top/2018/11/20/SRC/owasp_top10/">https://blog.yunink.top/2018/11/20/SRC/owasp_top10/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/OWASP/">OWASP</a></div><div class="post_share"><div class="social-share" data-image="/images/src/butian.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2018/12/15/VPS/linux-hotkey/"><img class="prev_cover lazyload" data-src="/images/cover-top/1-hotkey.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Linux hot key</div></div></a></div><div class="next-post pull_right"><a href="/2018/10/12/WriteUp/bugku-challenge/"><img class="next_cover lazyload" data-src="/img/post.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">BugKu-CTF WP</div></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> Comment</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '605cfa3643e06644b1bf',
+  clientSecret: '247d65b65e43050562d95bfdcea0e7fd776be4b9',
+  repo: 'gitalk',
+  owner: 'Yunink',
+  admin: ['Yunink'],
+  id: md5(decodeURI(location.pathname)),
+  language: 'zh-CN',
+  perPage: 10,
+  distractionFreeMode: false,
+  pagerDirection: 'last',
+  createIssueManually: false,
+  updateCountCallback: commentCount
+})
+gitalk.render('gitalk-container')
+
+function commentCount(n){
+  try {
+    document.getElementsByClassName('gitalk-comment-count')[0].innerHTML= n
+  } catch (e) {
+    return false
+  }
+}</script></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By Yunink</div><div class="framework-info"><span>Driven </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="Read Mode"></i><i class="fa fa-plus" id="font_plus" title="Increase font size"></i><i class="fa fa-minus" id="font_minus" title="Decrease font size"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="Dark Mode"></i></div><div id="rightside-config-show"><div id="rightside_config" title="Setting"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="Scroll to comment"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="Table of Contents" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="Back to top" aria-hidden="true"></i></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="/js/search/local-search.js"></script></body></html>
